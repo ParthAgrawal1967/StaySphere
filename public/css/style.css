@@ -59,7 +59,7 @@ body{
 }
 
 /*card*/
-.card{
+.listing-card{
     margin-bottom: 2rem;
     background-color: #F1EFEC !important;
     border: none !important;
@@ -126,4 +126,20 @@ padding: 0 !important;
 .show-card{
     padding-left: 0;
     padding-right: 0;
+}
+
+/*review*/
+.review-card{
+    background-color: #DADDC5 !important;
+    color: #283A2C !important;
+}
+
+.review-delete-btn{
+     background-color: #283A2C !important;
+      color: #ffffff !important;
+}
+
+.review-submit-btn:hover{
+ background-color: #283A2C !important;
+      color: #ffffff !important;
 }
