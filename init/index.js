@@ -16,11 +16,21 @@ async function main(){
     await mongoose.connect(MONGO_URL);
 }
 
-const initDB= async ()=>{
+const initDB = async () => {
     await Listing.deleteMany({});
-    initData.data=initData.data.map((obj)=>({...obj,owner:"6898442cb858c7f9b59a79f8"}));
+
+    initData.data = initData.data.map((obj) => ({
+        ...obj,
+        owner: "6898442cb858c7f9b59a79f8",
+        image: {
+            url: obj.image,         
+            filename: "listingimage"
+        }
+    }));
+
     await Listing.insertMany(initData.data);
-    console.log("data was initialized");
-}
+    console.log("Data was initialized");
+};
+
 
 initDB();

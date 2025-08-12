@@ -4,54 +4,16 @@ const router=express.Router();
 const User = require("../models/user");
 const passport=require("passport");
 const {saveRedirectUrl}=require("../middleware.js");
-router.get("/signup",(req,res)=>{
-    res.render("users/signup.ejs");
-})
+const userController=require("../controllers/user.js");
 
-router.post("/signup",wrapAsync(async(req,res)=>{
-    try{
-        let{username,email,password}=req.body;
-    const newUser=new User({email,username});
-    const registeredUser= await User.register(newUser,password);
-    console.log(registeredUser);
-    req.login(registeredUser,(err)=>{
-        if(err)
-        {
-           return next(err);
-        }
-    req.flash("success","Welcome to StaySphere!");
-    res.redirect("/listings");
-    });
-    }
-    catch(e){
-        req.flash("error",e.message);
-        res.redirect("/signup");
-    }
-}));
+router.route("/signup")
+.get(userController.rendersignupform)
+.post(wrapAsync(userController.signup));
 
-router.get("/login",(req,res)=>{
-   res.render("users/login.ejs");
-});
+router.route("/login")
+.get(userController.renderloginform)
+.post(saveRedirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),userController.login);
 
-router.post("/login",saveRedirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),async(req,res)=>{
-   req.flash("success","Welcome back to StaySphere");
-   let redirectUrl = res.locals.redirectUrl || "/listings";
-   if (redirectUrl.includes("?_method=DELETE")) {
-      const listingId = redirectUrl.split("/")[2];
-      redirectUrl = `/listings/${listingId}`;
-    }
-    res.redirect(redirectUrl);
-});
-
-router.get("/logout",(req,res,next)=>{
-    req.logout((err)=>{
-        if(err)
-        {
-           return next(err);
-        }
-        req.flash("success","You are logged out!");
-        res.redirect("/listings");
-    })
-})
+router.get("/logout",userController.logout)
 
 module.exports=router;
