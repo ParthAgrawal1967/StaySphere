@@ -1,0 +1,71 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="row mt-3">
+  <div class="col-8 offset-2">
+    <h3>Edit your Info</h3>
+    <form method="POST" action="/listings/<%= listing._id %>/hostinfo/<%= host._id %>?_method=PUT"
+ novalidate class="needs-validation" enctype="multipart/form-data">
+      
+      <!-- Name -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input name="host[name]" value="<%= host.name %>" type="text" class="form-control" required />
+        <div class="valid-feedback">Name looks good!</div>
+      </div>
+
+      <!-- Image -->
+<div class="mb-3 mt-2">
+  Current Host Photo<br/>
+  <% if (originalPhotoUrl) { %>
+    <img src="<%= originalPhotoUrl %>" class="img-fluid rounded" style="max-width:200px"/>
+  <% } else { %>
+    <p>No photo uploaded yet</p>
+  <% } %>
+</div>
+
+  <!-- Upload new image -->
+  <div class="mb-3 mt-2">
+    <label for="photo" class="form-label">Upload New Photo</label>
+    <input name="host[photo]" type="file" class="form-control"/>
+  </div>
+
+
+      <!-- Phone -->
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone No.</label>
+        <input name="host[phone]" value="<%= host.phone %>" placeholder="enter phone no." type="tel" class="form-control" required pattern="[0-9]{10}" maxlength="10" />
+        <div class="invalid-feedback">Please enter your phone no.</div>
+      </div>
+
+      <!-- Bio -->
+      <div class="mb-3">
+        <label for="bio" class="form-label">Bio</label>
+        <textarea name="host[bio]" placeholder="enter bio" class="form-control" required><%= host.bio %></textarea>
+        <div class="invalid-feedback">Please add a short description about yourself</div>
+      </div>
+
+      <!-- Favourite Places & Hobbies -->
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="favoritePlaces" class="form-label">Favourite Places</label>
+          <input name="host[favoritePlaces]" value="<%= host.favoritePlaces %>" placeholder="enter favorite places (comma separated)" type="text" class="form-control" />
+        </div>
+        <div class="mb-3 col-md-8">
+          <label for="hobbies" class="form-label">Hobbies</label>
+          <input name="host[hobbies]" value="<%= host.hobbies %>" placeholder="enter hobbies (comma separated)" type="text" class="form-control" />
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input name="host[location]" value="<%= host.location %>" type="text" class="form-control" required />
+        <div class="invalid-feedback">Location should be valid</div>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn btn-dark edit-btn mt-3">Update Info</button>
+      <br /><br />
+    </form>
+  </div>
+</div>

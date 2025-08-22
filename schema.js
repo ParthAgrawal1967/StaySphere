@@ -17,3 +17,20 @@ review: Joi.object({
     comment: Joi.string().required(),
 }).required()
 });
+
+module.exports.hostInfoSchema = Joi.object({
+  host: Joi.object({
+    name: Joi.string().required(),
+    phone: Joi.string()
+      .pattern(/^\d{10}$/)
+      .required()
+      .messages({
+        "string.pattern.base": "Phone number must be exactly 10 digits.",
+      }),
+    bio: Joi.string().required(),
+    location: Joi.string().required(),
+    image: Joi.string().allow("",null),
+    favoritePlaces: Joi.array().items(Joi.string()).single(),
+    hobbies: Joi.array().items(Joi.string()).single()
+  }).required()
+});

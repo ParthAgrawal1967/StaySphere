@@ -1,4 +1,5 @@
 const Listing=require("../models/listing");
+const Host = require("../models/host");
 
 module.exports.index=async (req,res)=>{
    const allListings=await Listing.find({});
@@ -31,21 +32,22 @@ module.exports.createListing=async (req,res,next)=>{
     }
    newListing.geometry=coords;
   let savedListing= await newListing.save();
-   req.flash("success","New Listing Created!");
-   res.redirect("/listings");
+   req.flash("success", "New Listing Created! Please add host info.");
+   res.redirect(`/listings/${savedListing._id}/hostinfo/newhost`);
 }
 
 module.exports.showListing=async(req,res)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id).populate({path:"reviews",
        populate: { path: "author" }
-    },).populate("owner");
+    },).populate("owner") .populate("host");;
     if(!listing)
     {
         req.flash("error","Listing does not exits!");
         return res.redirect("/listings");
     }
-    res.render("listings/show.ejs",{listing});
+     const host = listing.host;
+    res.render("listings/show.ejs",{listing,host});
 }
 
 module.exports.editListing=async (req,res)=>{
@@ -81,6 +83,16 @@ module.exports.updateListing=async (req,res)=>{
 module.exports.deleteListing=async (req,res)=>{
   let {id}=req.params;
   await Listing.findOneAndDelete({ _id: id }).populate("reviews");
+
+const deletedListing = await Listing.findByIdAndDelete(id);
+if (deletedListing && deletedListing.host) {
+  await Host.findByIdAndUpdate(deletedListing.host, { $pull: { listings: deletedListing._id } });
+  const host = await Host.findById(deletedListing.host);
+  if (host && host.listings.length === 0) {
+    await Host.findByIdAndDelete(host._id);
+  }
+}
+
   req.flash("success","Listing Deleted!");
    res.redirect("/listings");
 }

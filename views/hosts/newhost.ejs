@@ -1,0 +1,53 @@
+<% layout("layouts/boilerplate") %>
+<body>
+  <div class="row mt-3">
+    <div class="col-8 offset-2">
+      <h3>Add details about yourself</h3>
+
+      <form method="POST" action="/listings/<%= listing._id %>/hostinfo" novalidate class="needs-validation" enctype="multipart/form-data">
+        
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input name="host[name]" placeholder="enter name" type="text" class="form-control" required />
+          <div class="valid-feedback">Name looks good!</div>
+        </div>
+        
+          <div class="mb-3"><label for="image" class="form-label">Upload Your Image</label>
+            <input name="host[image]" type="file" class="form-control" required/></div>
+
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone No.</label>
+          <input name="host[phone]" placeholder="enter phone no."  type="tel"  class="form-control" required pattern="\d{10}" 
+  maxlength="10" />
+          <div class="invalid-feedback">Please enter your phone no.</div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="bio" class="form-label">Bio</label>
+          <textarea name="host[bio]" placeholder="enter bio" class="form-control" required></textarea>
+          <div class="invalid-feedback">Please add a short description about yourself</div>
+        </div>
+        
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="favoritePlaces" class="form-label">Favourite Places</label>
+            <input name="host[favoritePlaces]" placeholder="enter favorite places (comma separated)" type="text" class="form-control" />
+          </div>
+          <div class="mb-3 col-md-8">
+            <label for="hobbies" class="form-label">Hobbies</label>
+            <input name="host[hobbies]" placeholder="enter hobbies (comma separated)" type="text" class="form-control" />
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input name="host[location]" placeholder="enter location" type="text" class="form-control" required />
+          <div class="invalid-feedback">Location should be valid</div>
+        </div>
+        
+        <button class="btn btn-dark Submit-btn mt-3">Submit</button>
+        <br /><br />
+      </form>
+    </div>
+  </div>
+</body>

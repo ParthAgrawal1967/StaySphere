@@ -1,7 +1,9 @@
 const Listing=require("./models/listing");
 const Review=require("./models/review");
+const Host = require("./models/host");
+
 const ExpressError=require("./utils/ExpressError.js");
-const { listingSchema,reviewSchema }=require("./schema.js");
+const { listingSchema,reviewSchema,hostInfoSchema }=require("./schema.js");
 
 module.exports.isLoggedIn=(req,res,next)=>{
     if(!req.isAuthenticated()){
@@ -66,3 +68,34 @@ module.exports.isReviewAuthor= async(req,res,next)=>{
    }
    next();
 };
+
+//validate hostInfo
+module.exports.validateHostInfo=(req,res,next)=>{
+ let {error}=hostInfoSchema.validate(req.body);
+    if(error)
+    {
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }
+    else{
+        next();
+    }
+};
+
+module.exports.isHostOwner = async (req, res, next) => {
+  const { hostId, id } = req.params;
+  const host = await Host.findById(hostId);
+
+  if (!host) {
+    req.flash("error", "Host not found!");
+    return res.redirect(id ? `/listings/${id}` : "/listings");
+  }
+
+  if (!req.user || !host.user.equals(req.user._id)) {
+    req.flash("error", "You do not have permission to do that!");
+    return res.redirect(id ? `/listings/${id}` : "/listings");
+  }
+
+  next();
+};
+

@@ -206,3 +206,27 @@ padding: 0 !important;
     display: flex;
     align-items: center;
 }
+
+/*scroll button*/
+#scrollToTopBtn{
+    position: fixed;
+    bottom: 20px;
+    right: 12px;
+    background-color: #DADDC5;
+    color: #283A2C;
+    opacity: 0.5;
+    border: none;
+    border-radius: 100%;
+    padding: 10px 15px;
+    cursor: pointer;
+    box-shadow: 5px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s linear;
+}
+
+#scrollToTopBtn:hover{
+  opacity: 1;
+}
+
+.hidden{
+    display: none;
+}

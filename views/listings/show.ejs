@@ -75,5 +75,34 @@
       <h3>Where you'll be</h3>
       <div id="map"></div>
       </div>
+      <div class="col-8 offset-3 mt-3">
+        <hr/>
+        <h3>Know your Host</h3>
+      <div class="card mb-3 mt-4" style="max-width: 600px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="<%=host.image.url%>" class="img-fluid rounded-start" alt="host_image">
+    </div>
+  <div class="col-md-8">
+  <div class="card-body">
+    <h5 class="card-title">Host Details</h5>
+    <p class="card-text"><strong>Name:</strong> <%= host.name %></p>
+    <p class="card-text"><strong>Bio:</strong> <%= host.bio %></p>
+    <p class="card-text"><strong>Phone:</strong> <%= host.phone %></p>
+    <p class="card-text"><strong>Favorite Places:</strong> <%= host.favoritePlaces.join(", ") %></p>
+    <p class="card-text"><strong>Hobbies:</strong> <%= host.hobbies.join(", ") %></p>
+    <p class="card-text"><strong>Location:</strong> <%= host.location %></p>
+  </div>
+</div>
+   <%if(currUser && currUser._id.equals(listing.owner._id)) {%>
+    <div class="btns mb-3"> <a href="/listings/<%= listing._id %>/hostinfo/<%= host._id %>/editHostInfo" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+    </div>
+    <%}%>
+  </div>
+</div>
+</div>
     </div>
     <script src="/js/map.js"></script>
+
+
+
