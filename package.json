@@ -8,7 +8,7 @@
     "scripts": {
         "start": "node app.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "postinstall": "npx --no-install patch-package"
+        "postinstall": "echo 'Skipping patch-package on Render'"
     },
     "keywords": [],
     "author": "",
@@ -33,6 +33,6 @@
         "passport-local-mongoose": "^8.0.0"
     },
     "devDependencies": {
-        "patch-package": "^8.0.0"
+        "patch-package": "8.0.0"
     }
 }
