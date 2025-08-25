@@ -37,7 +37,15 @@ const listingSchema = new Schema({
       required:true
     }
   },
-  host: { type: Schema.Types.ObjectId, ref: "Host" }
+  host: { type: Schema.Types.ObjectId, ref: "Host" },
+  category:{
+    type:String,
+    enum:["Rooms","Mountains","Castles","Beaches","Awesome Pools","Camping","Arctic"]
+  },
+    isActive: {
+        type: Boolean,
+        default: false
+    }
 });
 
 listingSchema.post("findOneAndDelete", async function (doc) {

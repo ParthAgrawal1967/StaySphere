@@ -3,61 +3,64 @@ const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
 
 module.exports.newHostForm = async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  if (!listing) {
-    req.flash("error", "Listing not found");
-    return res.redirect("/listings");
-  }
-  const existingHost = await Host.findOne({ user: req.user._id });
-  if (existingHost) {
-    listing.host = existingHost._id;
-    await listing.save();
-     if (!existingHost.listings.includes(listing._id)) {
-      existingHost.listings.push(listing._id);
-      await existingHost.save();
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+        req.flash("error", "Listing not found");
+        return res.redirect("/listings");
     }
-    req.flash("success", "Using your existing host profile for this listing.");
-    return res.redirect(`/listings/${listing._id}`);
-  }
-  res.render("hosts/newhost", { listing });
+    const existingHost = await Host.findOne({ user: req.user._id });
+    if (existingHost) {
+        listing.host = existingHost._id;
+        await listing.save();
+        if (!existingHost.listings.includes(listing._id)) {
+            existingHost.listings.push(listing._id);
+            await existingHost.save();
+        }
+        req.flash("success", "Using your existing host profile for this listing.");
+        return res.redirect(`/listings/${listing._id}`);
+    }
+    res.render("hosts/newhost", { listing });
 };
 
 module.exports.createHost = async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
-  if (!listing) {
-    req.flash("error", "Listing not found");
-    return res.redirect("/listings");
-  }
-  let host = await Host.findOne({ user: req.user._id });
-  if (host) {
-    host.listings.push(listing._id);
-    await host.save();
-    listing.host = host._id;
-    await listing.save();
-    req.flash("success", "Listing linked to your existing host profile.");
-    return res.redirect(`/listings/${listing._id}`);
-  }
-  let hostData = req.body.host || {};
-  if (hostData.hobbies) hostData.hobbies = hostData.hobbies.split(",").map(h => h.trim());
-  if (hostData.favoritePlaces) hostData.favoritePlaces = hostData.favoritePlaces.split(",").map(p => p.trim());
-  if (req.file) {
-    hostData.image = {
-      url: req.file.path,
-      filename: req.file.filename,
-    };
-  }
-  const newHost = new Host({
-    ...hostData,
-    user: req.user._id,
-    listings: [listing._id]
-  });
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+        req.flash("error", "Listing not found");
+        return res.redirect("/listings");
+    }
 
-  await newHost.save();
-  listing.host = newHost._id;
-  await listing.save()
-  req.flash("success", "Host information added successfully!");
-  res.redirect(`/listings/${listing._id}`);
+    let host = await Host.findOne({ user: req.user._id });
+
+    if (!host) {
+        // Prepare host data
+        let hostData = req.body.host || {};
+        if (hostData.hobbies) hostData.hobbies = hostData.hobbies.split(",").map(h => h.trim());
+        if (hostData.favoritePlaces) hostData.favoritePlaces = hostData.favoritePlaces.split(",").map(p => p.trim());
+        if (req.file) {
+            hostData.image = { url: req.file.path, filename: req.file.filename };
+        }
+
+        host = new Host({
+            ...hostData,
+            user: req.user._id,
+            listings: [listing._id]
+        });
+        await host.save();
+    } else {
+        // Existing host
+        if (!host.listings.includes(listing._id)) host.listings.push(listing._id);
+        await host.save();
+    }
+
+    // Link listing to host and mark active
+    listing.host = host._id;
+    listing.isActive = true;  // optional
+    await listing.save();
+
+    req.flash("success", "Host info added and listing is now active!");
+    res.redirect(`/listings/${listing._id}`);
 };
+
 
 
 module.exports.editHostInfo = async (req, res) => {

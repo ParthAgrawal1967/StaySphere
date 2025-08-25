@@ -32,7 +32,9 @@ app.use(express.static(path.join(__dirname,"/public")))
 //database connection
 // const MONGO_URL="mongodb://127.0.0.1:27017/StaySphere"
 
-const dbUrl=process.env.ATLASDB_URL;
+const dbUrl = process.env.NODE_ENV === "production"
+    ? process.env.ATLASDB_URL
+    : "mongodb://127.0.0.1:27017/StaySphere";
 
 const store=MongoStore.create({
     mongoUrl: dbUrl,
@@ -74,13 +76,14 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req,res,next)=>{
-    res.locals.success=req.flash("success");
-    res.locals.error=req.flash("error");
-    res.locals.currUser=req.user;
-    next();
-})
+app.use(require('./middleware').setLocals);
 
+app.use(express.json());
+
+app.post("/session/tax-toggle", (req, res) => {
+  req.session.showTax = req.body.showTax;
+  res.sendStatus(200);
+});
 // app.get("/demouser", async(req,res)=>{
 //   let fakeUser=new User({
 //     email:"fakestudemt@gmail.com",
@@ -122,3 +125,4 @@ app.use((err, req, res, next) => {
     let { statusCode = 500, message = "Something went wrong" } = err;
     res.status(statusCode).render("error.ejs",{message});
 });
+

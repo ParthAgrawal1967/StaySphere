@@ -99,3 +99,11 @@ module.exports.isHostOwner = async (req, res, next) => {
   next();
 };
 
+module.exports.setLocals = (req, res, next) => {
+  res.locals.currUser = req.user || null;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.showTax = req.session.showTax || false;
+
+  next();
+};

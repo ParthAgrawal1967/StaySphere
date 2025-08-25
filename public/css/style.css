@@ -182,6 +182,8 @@ padding: 0 !important;
   box-sizing: border-box;
         }
         .filter{
+            text-decoration: none;
+            color: #ffffff;
             text-align: center;
             margin-right: 2rem;
             margin-top: 1rem;
@@ -205,6 +207,10 @@ padding: 0 !important;
     padding: 1rem;
     display: flex;
     align-items: center;
+}
+
+.filter.active {
+    opacity: 1 !important;
 }
 
 /*scroll button*/
