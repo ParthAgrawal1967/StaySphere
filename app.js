@@ -60,10 +60,6 @@ const sessionOptions={
     },
 };
 
-//root route
-app.get("/", (req, res) => {
-  res.redirect("/listings");
-});
 
 
 app.use(session(sessionOptions));
@@ -76,7 +72,21 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use((req, res, next) => {
+  res.locals.currUser = req.user || null;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.showTax = req.session.showTax || false;
+  next();
+});
+
+
 app.use(require('./middleware').setLocals);
+
+//root route
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 app.use(express.json());
 
