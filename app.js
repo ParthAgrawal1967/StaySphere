@@ -20,6 +20,7 @@ const listingRouter=require("./routes/listing.js");
 const reviewRouter=require("./routes/review.js");
 const userRouter=require("./routes/user.js");
 const hostRouter=require("./routes/host.js");
+const pagesRouter = require("./routes/pages");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -126,6 +127,7 @@ app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 app.use("/listings/:id/hostinfo", hostRouter);
+app.use("/", pagesRouter);
 
 app.all("/{*any}",(req,res,next)=>{
     next(new ExpressError(404,"Page not found"));
