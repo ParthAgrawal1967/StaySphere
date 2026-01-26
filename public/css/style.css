@@ -195,10 +195,17 @@ padding: 0 !important;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  background-color:#283A2C;
+
+  background: transparent;
   color: #ffffff;
-  padding: 0 5rem 0;
+  padding: 0 5rem;
   box-sizing: border-box;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  
 }
 
 .filter{
@@ -259,4 +266,56 @@ padding: 0 !important;
 
 .hidden{
     display: none;
+}
+/* hero container */
+.hero {
+  height: 70vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* swipe slides */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  transform: translateX(100%); /* start off screen right */
+  transition: transform 1s ease-in-out;
+}
+
+/* visible slide */
+.hero-slide.active {
+    z-index: 3;
+  transform: translateX(0);
+}
+
+/* slide exiting left */
+.hero-slide.exit {
+    z-index: 2;
+  transform: translateX(-100%);
+}
+
+/* gradient overlay stays */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.15)
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ensure slides are below overlay */
+.hero-slide {
+  z-index: 1;
+}
+.hero-wrapper {
+  position: relative;
 }
