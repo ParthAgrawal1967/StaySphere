@@ -315,6 +315,7 @@ padding: 0 !important;
 /* ensure slides are below overlay */
 .hero-slide {
   z-index: 1;
+  image-rendering: auto;
 }
 .hero-wrapper {
   position: relative;
