@@ -10,31 +10,31 @@ StaySphere is a full-stack Airbnb-style property listing and booking app built w
 
 **Explore page** — browse listings by category (Trending, Iconic Cities, Rooms, Mountains, Castles, Beaches, Awesome Pools, Camping, Arctic)
 
-![Homepage](images/homepage.png)
+![Homepage](images/homepage.jpeg)
 
 **Listings grid** with pricing shown per night
 
-![Listings](images/listings.png)
+![Listings](images/listings.jpeg)
 
 **Listing details** — description, price, and location
 
-![Listing detail](images/listing-detail-top.png)
+![Listing detail](images/listing-detail-top.jpeg)
 
 **Reviews** — logged-in users can leave a star rating and comment
 
-![Reviews](images/reviews.png)
+![Reviews](images/reviews.jpeg)
 
 **Interactive map** ("Where you'll be") and a **host profile card** with bio, hobbies, and favorite places
 
-![Host and map](images/listing-detail-host.png)
+![Host and map](images/listing-detail-host.jpeg)
 
 **Login** page
 
-![Login](images/login.png)
+![Login](images/login.jpeg)
 
 **Add a new listing** — hosts can upload an image, set price, location, country, and category
 
-![Add listing](images/add-listing.png)
+![Add listing](images/add-listing.jpeg)
 
 ---
 
